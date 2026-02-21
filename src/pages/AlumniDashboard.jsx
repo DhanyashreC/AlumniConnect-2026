@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+// 1. IMPORT REMAINS THE SAME
+import { useNavigate } from 'react-router-dom'; 
 
 export default function AlumniDashboard() {
   const [view, setView] = useState("overview");
   const fileInputRef = useRef(null);
+  
+  // 2. INITIALIZE NAVIGATE
+  const navigate = useNavigate(); 
 
   // --- USER DATA STATE ---
-  // Initialized empty - will be populated from localStorage
   const [userData, setUserData] = useState({
     name: "", email: "", phone: "", department: "", 
     passingYear: "", cgpa: "",
@@ -15,13 +19,12 @@ export default function AlumniDashboard() {
     resumeUploaded: false
   });
 
-  // --- NEW: LOAD FROM LOCAL STORAGE ---
+  // --- EXISTING LOGIC ---
   useEffect(() => {
     const savedData = localStorage.getItem('loggedInUser');
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
-        // Only update fields if they exist in the stored object
         setUserData(prev => ({ ...prev, ...parsedData }));
       } catch (e) {
         console.error("Failed to parse user data", e);
@@ -29,24 +32,19 @@ export default function AlumniDashboard() {
     }
   }, []);
 
-  // --- NEW: CALC DYNAMIC PROGRESS ---
   const calculateProgress = () => {
     const totalFields = Object.keys(userData).length;
     const filledFields = Object.values(userData).filter(val => val !== "" && val !== false).length;
     return Math.round((filledFields / totalFields) * 100);
   };
 
-  // --- FORM STATES ---
   const [newJob, setNewJob] = useState({ company: "", role: "", exp: "", salary: "", location: "", link: "" });
   const [newIntern, setNewIntern] = useState({ company: "", role: "", duration: "", stipend: "", mode: "Remote", skills: "", link: "" });
-  
-  // --- FILTER STATES ---
   const [filterCompany, setFilterCompany] = useState("");
   const [filterRole, setFilterRole] = useState(""); 
   const [filterPkgRange, setFilterPkgRange] = useState("all");
   const [filterMinCGPA, setFilterMinCGPA] = useState(0); 
 
-  // --- DATA ---
   const [driveData] = useState([
     { id: 1, company: "Google", role: "SDE", location: "Bangalore", package: 32, eligibility: 8.5, deadline: "2026-03-15" },
     { id: 2, company: "Microsoft", role: "Analyst", location: "Hyderabad", package: 28, eligibility: 8.0, deadline: "2026-03-10" },
@@ -73,7 +71,6 @@ export default function AlumniDashboard() {
     { id: 2, text: "Awarded 'Top Mentor' for Feb 2026", time: "1d ago" }
   ];
 
-  // --- HANDLERS ---
   const handleSaveProfile = () => {
     localStorage.setItem('loggedInUser', JSON.stringify(userData));
     alert("Profile saved successfully to storage!");
@@ -135,12 +132,33 @@ export default function AlumniDashboard() {
       </div>
 
       <div style={styles.mainContent}>
+        
+        {/* 3. FIXED: UPDATED NAVIGATE TO GO TO HOME ('/') */}
+        <button 
+          onClick={() => navigate('/')} 
+          style={{
+            background: 'none', 
+            border: 'none', 
+            color: '#94a3b8', 
+            cursor: 'pointer', 
+            marginBottom: '15px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '5px',
+            fontSize: '14px'
+          }}
+          onMouseEnter={(e) => e.target.style.color = '#38bdf8'}
+          onMouseLeave={(e) => e.target.style.color = '#94a3b8'}
+        >
+          ← Back to Home
+        </button>
+
         <header style={styles.header}>
           <h2 style={styles.welcome}>Welcome Back, {userData.name || "User"}</h2>
           <div style={styles.badge}>🔔 {myApps.length} Active Apps</div>
         </header>
 
-        {/* OVERVIEW */}
+        {/* --- REST OF THE VIEWS (Unchanged) --- */}
         {view === "overview" && (
           <div style={styles.viewContainer}>
             <div style={styles.card}>
@@ -166,7 +184,6 @@ export default function AlumniDashboard() {
           </div>
         )}
 
-        {/* ANALYTICS VIEW */}
         {view === "analytics" && (
           <div style={styles.viewContainer}>
             <h3 style={{...styles.sectionTitle, color: '#38bdf8'}}>📈 Performance Insights</h3>
@@ -192,7 +209,6 @@ export default function AlumniDashboard() {
                   <p style={{color: '#fbbf24', fontSize: '12px'}}>New recruiters this week</p>
               </div>
             </div>
-            
             <div style={{...styles.card, marginTop: '30px', textAlign: 'center', padding: '60px'}}>
               <p style={{color: '#64748b'}}>Visual Analytics Chart Placeholder</p>
               <h4 style={{color: '#cbd5e1'}}>Application Success Rate: 65%</h4>
@@ -203,7 +219,6 @@ export default function AlumniDashboard() {
           </div>
         )}
 
-        {/* PLACEMENT DRIVES */}
         {view === "drives" && (
           <div style={styles.viewContainer}>
             <div style={styles.filterBarGrid}>
@@ -253,7 +268,6 @@ export default function AlumniDashboard() {
           </div>
         )}
 
-        {/* JOB BOARD */}
         {view === "jobboard" && (
           <div style={styles.viewContainer}>
             <div style={styles.card}>
@@ -283,7 +297,6 @@ export default function AlumniDashboard() {
           </div>
         )}
 
-        {/* INTERNSHIPS */}
         {view === "internships" && (
           <div style={styles.viewContainer}>
             <div style={styles.card}>
@@ -311,7 +324,6 @@ export default function AlumniDashboard() {
           </div>
         )}
 
-        {/* PROFILE */}
         {view === "profile" && (
           <div style={styles.viewContainer}>
             <div style={styles.card}>
@@ -359,6 +371,7 @@ export default function AlumniDashboard() {
   );
 }
 
+// STYLES OBJECT (Unchanged)
 const styles = {
   layout: { display: "flex", backgroundColor: "#0f172a", minHeight: "100vh", color: "white", fontFamily: "sans-serif" },
   sidebar: { width: "240px", backgroundColor: "#1e293b", height: "100vh", padding: "20px", position: "fixed", borderRight: "1px solid #334155" },

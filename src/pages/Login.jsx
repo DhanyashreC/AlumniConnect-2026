@@ -71,7 +71,8 @@ export default function Login() {
           />
           
           <div style={styles.extraActions}>
-            <span style={styles.forgotPass}>Forgot Password?</span>
+            {/* Updated span to Link to navigate to the new forgot-password route */}
+            <Link to="/forgot-password" style={styles.forgotPass}>Forgot Password?</Link>
           </div>
 
           <button type="submit" style={styles.button}>Sign In</button>
@@ -93,7 +94,8 @@ const styles = {
   subtitle: { color: '#94a3b8', fontSize: '13px' },
   input: { width: '100%', padding: '12px', marginBottom: '15px', borderRadius: '8px', border: '1px solid #334155', backgroundColor: '#0f172a', color: 'white', outline: 'none', boxSizing: 'border-box' },
   extraActions: { textAlign: 'right', marginBottom: '20px' },
-  forgotPass: { color: '#38bdf8', fontSize: '13px', cursor: 'pointer', fontWeight: '500' },
+  // Kept style exactly the same, just ensured text-decoration is none for the Link component
+  forgotPass: { color: '#38bdf8', fontSize: '13px', cursor: 'pointer', fontWeight: '500', textDecoration: 'none' },
   button: { width: '100%', padding: '14px', backgroundColor: '#38bdf8', color: '#0f172a', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '16px' },
   footerText: { color: '#94a3b8', marginTop: '25px', fontSize: '14px' },
   link: { color: '#38bdf8', textDecoration: 'none', fontWeight: 'bold' }

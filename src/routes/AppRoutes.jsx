@@ -20,6 +20,8 @@ import SkillAssessment from "../pages/SkillAssessment";
 import UpdateProfile from "../pages/UpdateProfile";
 import PostOffer from '../pages/PostOffer';
 import AdminReports from '../pages/AdminReports';
+import ForgotPassword from "../pages/ForgotPassword"; 
+import ResetPassword from "../pages/ResetPassword"; // New Import Added
 
 export default function AppRoutes() {
   return (
@@ -29,6 +31,8 @@ export default function AppRoutes() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} /> 
+        <Route path="/reset-password" element={<ResetPassword />} /> {/* New Route Added */}
         
         {/* Dashboards */}
         <Route path="/admin" element={<AdminDashboard />} />
@@ -49,7 +53,7 @@ export default function AppRoutes() {
         <Route path="/assessments" element={<SkillAssessment />} />
         <Route path="/update-profile" element={<UpdateProfile />} /> 
         <Route path="/admin/post-offer" element={<PostOffer />} />
-<Route path="/admin/reports" element={<AdminReports />} />
+        <Route path="/admin/reports" element={<AdminReports />} />
       </Routes>
     </BrowserRouter>
   );
